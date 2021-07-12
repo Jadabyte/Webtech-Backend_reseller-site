@@ -22,7 +22,9 @@ class ProductFavoriteFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => $this->faker->numberBetween($min = 1, $max = 10),
+            'product_id' => $this->faker->numberBetween($min = 1, $max = 10),
+            'favorite' => $this->faker->boolean,
         ];
     }
 }

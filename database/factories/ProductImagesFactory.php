@@ -22,7 +22,8 @@ class ProductImagesFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'product_id' => $this->faker->numberBetween($min = 1, $max = 10),
+            'product_image_path' => 'product_image_default',
         ];
     }
 }
