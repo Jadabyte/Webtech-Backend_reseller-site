@@ -23,5 +23,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/product/create', [ProductController::class, 'showCreate'])->middleware(['auth'])->name('productCreate');
+Route::post('/product/create', [ProductController::class, 'createProduct']);
+
+Route::get('/product/{id}', [ProductController::class, 'showProduct']);
 
 require __DIR__.'/auth.php';

@@ -4,17 +4,23 @@
             {{ __('Create a new listing') }}
         </h2>
     </x-slot>
-    <form action="/product/create" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <form action="/product/create" method="POST" enctype="multipart/form-data" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        @csrf
         <div class="d-flex flex-column w-25 mt-3">
             <label for="title" class="text-lg mb-2">Title</label>
             <input class="p-2" type="text" name="title" placeholder="Give your listing a title" />
         </div>
 
         <div class="d-flex flex-column w-25 mt-3">
+            <label for="image" class="text-lg mb-2">Add some images</label>
+            <input type="file" name="product_img[]" id="product_img" multiple>
+        </div>
+
+        <div class="d-flex flex-column w-25 mt-3">
             <label for="price" class="text-lg mb-2">Price</label>
             <div>
                 <span class="text-lg mb-2">€</span>
-                <input class="w-25 p-2" type="number" min="1" step="any" placeholder="0.0" />
+                <input name="price" class="w-25 p-2" type="number" min="1" step="any" placeholder="0.0" />
             </div>
         </div>
 
@@ -27,7 +33,7 @@
             <h3 class="text-lg mb-2">Select a category for your listing</h3>
             @foreach($allCategories as $category)
                 <label for="{{ $loop->index+1 }}">
-                    <input type="radio" name="category" id="{{ $loop->index+1 }}">
+                    <input type="radio" name="category" id="{{ $loop->index+1 }}" value="{{ $loop->index+1 }}">
                     {{ $category }}
                 </label>
             @endforeach
@@ -37,3 +43,9 @@
         </div>
     </form>
 </x-app-layout>
+
+<script>
+    $( document ).ready(function(){
+        
+    });
+</script>
