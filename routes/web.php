@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +27,8 @@ Route::get('/product/create', [ProductController::class, 'showCreate'])->middlew
 Route::post('/product/create', [ProductController::class, 'createProduct']);
 
 Route::get('/product/{id}', [ProductController::class, 'showProduct']);
+
+Route::get('/profile/edit', [UserController::class, 'showEditProfile'])->middleware(['auth'])->name('profileEdit');
+Route::post('/profile/edit', [UserController::class, 'editProfile']);
 
 require __DIR__.'/auth.php';
