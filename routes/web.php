@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -19,9 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
 
 Route::get('/product/create', [ProductController::class, 'showCreate'])->middleware(['auth'])->name('productCreate');
 Route::post('/product/create', [ProductController::class, 'createProduct']);

@@ -11,22 +11,30 @@
                 {{ session()->get('message') }}
             </div>
         @endif
-        <form action="/profile/edit" method="POST">
+        <form action="/profile/edit" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="d-flex flex-column w-25 mt-3">
                 <label for="name" class="text-lg mb-2">Name</label>
                 <input value="{{ $user->name }}" class="p-2" type="text" name="name" id="name">
             </div>
 
-            <div class="d-flex flex-column w-25 mt-3">
-                <label for="image" class="text-lg mb-2">Your Profile Image</label>
-                <input type="file" name="avatar" id="avatar">
+            <div class="mt-3">
+                <div class="bg-image w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
+                    style="background-image: url('/storage/{{ $user->user_avatar_path }}'); 
+                            background-size: cover; 
+                            background-position: center;">
+                </div>
+
+                <div class="d-flex flex-column w-25 mt-3">
+                    <label for="image" class="text-lg mb-2">Your Profile Image</label>
+                    <input type="file" name="avatar" id="avatar">
+                </div>
             </div>
 
-            <input class="btn btn-primary text-white text-lg mt-3" type="submit" value="Save">
+            <input class="btn btn-primary text-white text-lg mt-3" type="submit" value="Save Details">
         </form>
-
-        <form action="">
+        <!--
+        <form action="profile/changePassword">
             @csrf
             <div class="d-flex flex-column w-25 mt-3">
                 <label class="text-lg mb-2" for="password-old">Current password</label>
@@ -45,6 +53,7 @@
 
             <input class="btn btn-primary text-white text-lg mt-3" type="submit" value="Set Password">
         </form>
+        -->
     </main>
 
 </x-app-layout>
