@@ -14,8 +14,4 @@
             </div>
         </div>
     </div>
-
-    <a href="/product/create">
-        Post a new product
-    </a>
 </x-app-layout>

@@ -33,6 +33,12 @@ class ProductController extends Controller
     }
 
     public function createProduct(Request $request){
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required',
+        ]);
+
         //-Create a new product----------
         $product = new Product;
 
@@ -78,6 +84,6 @@ class ProductController extends Controller
             }
         }
 
-        return redirect('/product/' . $productId);
+        return redirect('/product/' . $productId)->with('message', 'Your listing was created successfully');
     }
 }
