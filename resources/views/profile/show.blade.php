@@ -26,7 +26,6 @@
                             <a href="/product/{{ $product->product_id }}"><h3 class="text-lg text-truncate">{{ $product->title }}</h3></a>
                             <div class="pl-2">
                                 <p>Category: <a href="/{{ $product->category_name }}">{{ $product->category_name }}</a></p>
-                                <p>Posted by: <a href="/profile/{{ $product->user_id }}">{{ $product->name }}</a></p>
                             </div>
                         </div>
                     </div>

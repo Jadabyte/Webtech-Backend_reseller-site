@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -21,8 +23,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
-Route::post('/productSearch', [GeneralController::class, 'searchProducts']);
-Route::get('/productSearch', [GeneralController::class, 'showResults']);
+
+Route::get('/search', [GeneralController::class, 'showResults']);
 
 Route::get('/product/create', [ProductController::class, 'showCreate'])->middleware(['auth'])->name('productCreate');
 Route::post('/product/create', [ProductController::class, 'createProduct']);

@@ -11,6 +11,15 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+        @if($product->user_id == Auth::id())
+            <div class="pb-2 d-flex align-items-center border-bottom">
+                <h3 class="text-lg">Actions:</h3>
+                <a class="ml-2 btn btn-primary text-white" href="/product/{{ $product->id }}/edit">Edit listing</a>
+                <form action="/product/{{ $product->id }}/delete">
+                    <input class="ml-2 btn btn-danger text-white" type="button" value="Remove listing">
+                </form>
+            </div>
+        @endif
         <div class="d-flex flex-column mt-3">
             <h3 class="text-lg mb-2">Product Images:</h3>
             <div class="d-flex flex-wrap">
@@ -21,6 +30,11 @@
         </div>
 
         <div class="d-flex flex-column">
+            <h3 class="text-lg mb-2">Category:</h3>
+            <p>{{ $product->category_name }}</p>
+        </div>
+
+        <div class="d-flex flex-column mt-3">
             <h3 class="text-lg mb-2">Description:</h3>
             <p>{{ $product->description }}</p>
         </div>

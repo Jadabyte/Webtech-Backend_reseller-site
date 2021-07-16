@@ -26,7 +26,21 @@ class ProductController extends Controller
     }
 
     public function showProduct($id){
-        $product = Product::where('id', $id)->first();
+        $product = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
+        ->join('users', 'products.user_id', 'users.id')
+        ->where('products.id', $id)
+        ->first([
+            'users.id as user_id',
+            'users.name',
+            'users.user_avatar_path',
+            'products.id as product_id',
+            'products.title',
+            'products.description',
+            'products.price',
+            'product_categories.name as category_name',
+            'products.created_at',
+        ]);
+
         $productImages = ProductImages::where('product_id', $id)->get('product_image_path');
         //dd($productImages);
         return view('product.show', compact('product', 'productImages'));
@@ -94,6 +108,7 @@ class ProductController extends Controller
             ->join('users', 'products.user_id', 'users.id')
             ->where('product_categories.name', $category)
             ->get([
+                'users.id as user_id',
                 'users.name',
                 'users.user_avatar_path',
                 'products.id as product_id',
@@ -103,7 +118,6 @@ class ProductController extends Controller
                 'product_images.product_image_path',        // with the same name
                 'products.created_at',
             ]);
-
         return view('product.category', compact('products'));
     }
 }

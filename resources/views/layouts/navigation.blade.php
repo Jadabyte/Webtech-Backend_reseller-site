@@ -25,8 +25,8 @@
                 </div>
             </div>
 
-            <form action="/productSearch" class="d-flex align-items-center">
-                <input class="p-2 m-1 border rounded border-primary" name="productSearch" placeholder="Search" type="text">
+            <form action="/search" class="d-flex align-items-center">
+                <input class="p-2 m-1 border rounded border-primary" name="search" placeholder="Search" type="text">
                 <input class="btn btn-primary text-white" type="submit" value="Search">
             </form>
 
@@ -46,6 +46,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link href="/profile/{{ Auth::id() }}">
+                            {{ __('View Profile') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profileEdit')">
                             {{ __('Edit Profile') }}
                         </x-dropdown-link>
