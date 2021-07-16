@@ -24,7 +24,7 @@ class ProductFactory extends Factory
         return [
             'user_id' => $this->faker->numberBetween($min = 1, $max = 10),
             'product_category_id' => $this->faker->numberBetween($min = 1, $max = 10),
-            'title' => $this->faker->sentence($nbWords = 3, $variableNbWords = true),
+            'title' => $this->faker->text($maxNbChars = 10),
             'description' => $this->faker->text($maxNbChars = 200),
             'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = NULL),
         ];

@@ -21,19 +21,27 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', function () {
+    return view('login');
+});
+Route::get('/register', function () {
+    return view('register');
+});
 
 Route::get('/dashboard', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
 
-Route::get('/search', [GeneralController::class, 'showResults']);
+Route::get('/search', [GeneralController::class, 'showResults'])->middleware(['auth']);
 
 Route::get('/product/create', [ProductController::class, 'showCreate'])->middleware(['auth'])->name('productCreate');
-Route::post('/product/create', [ProductController::class, 'createProduct']);
+Route::post('/product/create', [ProductController::class, 'createProduct'])->middleware(['auth']);
+Route::get('/product/{id}/edit', [ProductController::class, 'showEditProduct'])->middleware(['auth']);
+Route::post('/product/{id}/edit', [ProductController::class, 'editProduct'])->middleware(['auth']);
 
-Route::get('/product/{id}', [ProductController::class, 'showProduct']);
-Route::get('/{category}', [ProductController::class, 'showCategory']);
+Route::get('/product/{id}', [ProductController::class, 'showProduct'])->middleware(['auth']);
+Route::get('/{category}', [ProductController::class, 'showCategory'])->middleware(['auth']);
 
 Route::get('/profile/edit', [UserController::class, 'showEditProfile'])->middleware(['auth'])->name('profileEdit');
 Route::get('/profile/{id}', [UserController::class, 'showProfile'])->middleware(['auth'])->name('profileView');
-Route::post('/profile/edit', [UserController::class, 'editProfile']);
+Route::post('/profile/edit', [UserController::class, 'editProfile'])->middleware(['auth']);
 
 require __DIR__.'/auth.php';

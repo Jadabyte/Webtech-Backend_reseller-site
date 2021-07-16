@@ -41,9 +41,91 @@ class ProductController extends Controller
             'products.created_at',
         ]);
 
-        $productImages = ProductImages::where('product_id', $id)->get('product_image_path');
-        //dd($productImages);
+        $productImages = ProductImages::where('product_id', $id)
+            ->where('active', 1)
+            ->get('product_image_path');
+
         return view('product.show', compact('product', 'productImages'));
+    }
+
+    public function showEditProduct($id){
+        $product = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
+        ->join('users', 'products.user_id', 'users.id')
+        ->where('products.id', $id)
+        ->first([
+            'users.id as user_id',
+            'users.name',
+            'users.user_avatar_path',
+            'products.id as product_id',
+            'products.title',
+            'products.description',
+            'products.price',
+            'product_categories.id as category_id',
+            'products.created_at',
+        ]);
+        
+        $categories = ProductCategory::get();
+
+        $allCategories = [];
+        foreach($categories as $category){
+            array_push($allCategories, $category['name']);
+        }
+
+        $productImages = ProductImages::where('product_id', $id)
+            ->where('active', 1)
+            ->get('product_image_path');
+
+        return view('product.edit', compact('product', 'productImages', 'allCategories'));
+    }
+
+    public function editProduct(Request $request, $id){
+        $product = Product::find($id);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required',
+        ]);
+
+        $product->product_category_id = $request->category;
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+
+        if (($request->product_img) != null) {
+            if($request->removeImages == 'on'){
+                ProductImages::where('active', '1')
+                    ->where('product_id', $id)
+                    ->update(['active' => 0]);
+            }
+
+            foreach($request->file('product_img') as $index => $image){
+                $productImage = new ProductImages;
+
+                $productImage->product_id = $id;
+                $index = $index + 1;
+                
+                //$image = $request->file('product_img');
+                $name = $request->input('title').'_img-'.$index.'_'.time();
+                $nameCheck1 = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+                $nameCheck2 = str_replace("'", '', $nameCheck1);
+                $name = str_replace(' ', '_', $nameCheck2);
+
+                $folder = 'product-photos/';
+
+                $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+
+                //this comes from /Traits/UploadTrait
+                $this->uploadOne($image, $folder, 'public', $name);
+
+                $productImage->product_image_path = $filePath;
+
+                $productImage->save();
+            }
+        }
+
+        $product->save();
+        session()->flash("message","Changes saved");
+        return redirect('/product/' . $id . '/edit');
     }
 
     public function createProduct(Request $request){

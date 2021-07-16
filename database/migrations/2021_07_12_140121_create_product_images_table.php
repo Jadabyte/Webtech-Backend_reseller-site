@@ -17,6 +17,7 @@ class CreateProductImagesTable extends Migration
             $table->id();
             $table->foreignId('product_id')->references('id')->on('products');
             $table->string('product_image_path')->default('product-photos/default-product-image.jpg');
+            $table->boolean('active')->default('1');
             $table->timestamps();
         });
     }

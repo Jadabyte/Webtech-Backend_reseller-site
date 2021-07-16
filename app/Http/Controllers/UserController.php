@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\ProductImages;
 use App\Traits\UploadTrait;
 
 class UserController extends Controller
@@ -17,10 +18,10 @@ class UserController extends Controller
     public function showProfile($id){
         $user = User::find($id);
 
-        $userProducts = Product::join('product_images', 'product_images.product_id', '=', 'products.id')
-            ->join('product_categories','product_categories.id', '=', 'products.product_category_id')
+        $userProducts = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
             ->join('users', 'products.user_id', 'users.id')
             ->where('products.user_id', $id)
+            ->where('products.active', 1)
             ->get([
                 'users.id as user_id',
                 'users.name',
@@ -30,10 +31,17 @@ class UserController extends Controller
                 'products.description',
                 'products.price',
                 'product_categories.name as category_name', // use 'as [column name]' when selecting columns
-                'product_images.product_image_path',        // with the same name
-                'products.created_at',
+                'products.created_at',                      // with the same name
             ]);
-
+        
+        $productWithImage = [];
+        foreach($userProducts as $product){
+            $thumbnail = ProductImages::where('product_id', $product['product_id'])
+                ->where('active', 1)
+                ->first();
+            $productWithImage = array_push($productWithImage, $thumbnail);
+        }
+        
         return view('profile.show', compact('user', 'userProducts'));
     }
 

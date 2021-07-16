@@ -25,8 +25,8 @@
                 </div>
             </div>
 
-            <form action="/search" class="d-flex align-items-center">
-                <input class="p-2 m-1 border rounded border-primary" name="search" placeholder="Search" type="text">
+            <form action="/search" class="w-50 d-flex align-items-center">
+                <input class="w-full p-2 m-1 border rounded border-primary" name="search" placeholder="Search" type="text">
                 <input class="btn btn-primary text-white" type="submit" value="Search">
             </form>
 
