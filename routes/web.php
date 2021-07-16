@@ -21,13 +21,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
+Route::post('/productSearch', [GeneralController::class, 'searchProducts']);
+Route::get('/productSearch', [GeneralController::class, 'showResults']);
 
 Route::get('/product/create', [ProductController::class, 'showCreate'])->middleware(['auth'])->name('productCreate');
 Route::post('/product/create', [ProductController::class, 'createProduct']);
 
 Route::get('/product/{id}', [ProductController::class, 'showProduct']);
+Route::get('/{category}', [ProductController::class, 'showCategory']);
 
 Route::get('/profile/edit', [UserController::class, 'showEditProfile'])->middleware(['auth'])->name('profileEdit');
+Route::get('/profile/{id}', [UserController::class, 'showProfile'])->middleware(['auth'])->name('profileView');
 Route::post('/profile/edit', [UserController::class, 'editProfile']);
 
 require __DIR__.'/auth.php';

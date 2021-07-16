@@ -25,6 +25,11 @@
                 </div>
             </div>
 
+            <form action="/productSearch" class="d-flex align-items-center">
+                <input class="p-2 m-1 border rounded border-primary" name="productSearch" placeholder="Search" type="text">
+                <input class="btn btn-primary text-white" type="submit" value="Search">
+            </form>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">

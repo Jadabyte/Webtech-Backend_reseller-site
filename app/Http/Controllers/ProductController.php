@@ -86,4 +86,24 @@ class ProductController extends Controller
 
         return redirect('/product/' . $productId)->with('message', 'Your listing was created successfully');
     }
+
+    public function showCategory($category){
+
+        $products = Product::join('product_images', 'product_images.product_id', '=', 'products.id')
+            ->join('product_categories','product_categories.id', '=', 'products.product_category_id')
+            ->join('users', 'products.user_id', 'users.id')
+            ->where('product_categories.name', $category)
+            ->get([
+                'users.name',
+                'users.user_avatar_path',
+                'products.id as product_id',
+                'products.title',
+                'products.description',
+                'product_categories.name as category_name', // use 'as [column name]' when selecting columns
+                'product_images.product_image_path',        // with the same name
+                'products.created_at',
+            ]);
+
+        return view('product.category', compact('products'));
+    }
 }
