@@ -36,6 +36,7 @@ Route::get('/product/create', [ProductController::class, 'showCreate'])->middlew
 Route::post('/product/create', [ProductController::class, 'createProduct'])->middleware(['auth']);
 Route::get('/product/{id}/edit', [ProductController::class, 'showEditProduct'])->middleware(['auth']);
 Route::post('/product/{id}/edit', [ProductController::class, 'editProduct'])->middleware(['auth']);
+Route::post('/product/{id}/remove', [ProductController::class, 'removeProduct'])->middleware(['auth']);
 
 Route::get('/product/{id}', [ProductController::class, 'showProduct'])->middleware(['auth']);
 Route::get('/{category}', [ProductController::class, 'showCategory'])->middleware(['auth']);

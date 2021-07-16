@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Models\User;
 use App\Models\Product;
-use App\Models\ProductImages;
 use App\Traits\UploadTrait;
 
 class UserController extends Controller
@@ -31,17 +30,10 @@ class UserController extends Controller
                 'products.description',
                 'products.price',
                 'product_categories.name as category_name', // use 'as [column name]' when selecting columns
-                'products.created_at',                      // with the same name
+                'products.product_thumbnail',                // with the same name
+                'products.created_at',
             ]);
-        
-        $productWithImage = [];
-        foreach($userProducts as $product){
-            $thumbnail = ProductImages::where('product_id', $product['product_id'])
-                ->where('active', 1)
-                ->first();
-            $productWithImage = array_push($productWithImage, $thumbnail);
-        }
-        
+
         return view('profile.show', compact('user', 'userProducts'));
     }
 

@@ -24,6 +24,29 @@
                     </x-nav-link>
                 </div>
             </div>
+            <div class="sm:flex sm:items-center mt-1">
+                <x-dropdown>
+                    <x-slot name="trigger">
+                        <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                            <div>Categories</div>
+
+                            <div class="ml-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        @foreach(App\Http\Controllers\ProductController::getCategories() as $category)
+                            <x-dropdown-link href="/{{ $category->name }}">
+                                {{ __($category->name) }}
+                            </x-dropdown-link>
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
+            </div>
 
             <form action="/search" class="w-50 d-flex align-items-center">
                 <input class="w-full p-2 m-1 border rounded border-primary" name="search" placeholder="Search" type="text">

@@ -120,6 +120,12 @@ class ProductController extends Controller
                 $productImage->product_image_path = $filePath;
 
                 $productImage->save();
+
+                if($index == 1){
+                    $setThumbnail = Product::find($id);
+                    $setThumbnail->product_thumbnail = $filePath;
+                    $setThumbnail->save();
+                }
             }
         }
 
@@ -177,18 +183,26 @@ class ProductController extends Controller
                 $productImage->product_image_path = $filePath;
 
                 $productImage->save();
+
+                if($index == 1){
+                    $setThumbnail = Product::find($productId);
+                    $setThumbnail->product_thumbnail = $filePath;
+                    $setThumbnail->save();
+                }
             }
         }
 
         return redirect('/product/' . $productId)->with('message', 'Your listing was created successfully');
     }
 
-    public function showCategory($category){
+    public function removeProduct($id){
+        $product = Product::find($id);
+        $product->active = 0;
+        $product->save();
 
-        $products = Product::join('product_images', 'product_images.product_id', '=', 'products.id')
-            ->join('product_categories','product_categories.id', '=', 'products.product_category_id')
+        $products = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
             ->join('users', 'products.user_id', 'users.id')
-            ->where('product_categories.name', $category)
+            ->where('products.active', 1)
             ->get([
                 'users.id as user_id',
                 'users.name',
@@ -196,10 +210,39 @@ class ProductController extends Controller
                 'products.id as product_id',
                 'products.title',
                 'products.description',
+                'products.price',
                 'product_categories.name as category_name', // use 'as [column name]' when selecting columns
-                'product_images.product_image_path',        // with the same name
+                'products.product_thumbnail',               // with the same name
+                'products.created_at',
+            ]);
+            
+        session()->flash("message","Listing removed");
+        return view('/dashboard', compact('products'));
+    }
+
+    public function showCategory($category){
+        $products = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
+            ->join('users', 'products.user_id', 'users.id')
+            ->where('product_categories.name', $category)
+            ->where('products.active', 1)
+            ->get([
+                'users.id as user_id',
+                'users.name',
+                'users.user_avatar_path',
+                'products.id as product_id',
+                'products.title',
+                'products.price',
+                'products.description',
+                'product_categories.name as category_name', // use 'as [column name]' when selecting columns
+                'products.product_thumbnail',        // with the same name
                 'products.created_at',
             ]);
         return view('product.category', compact('products'));
+    }
+
+    public static function getCategories(){
+        $categories = ProductCategory::get();
+
+        return $categories;
     }
 }

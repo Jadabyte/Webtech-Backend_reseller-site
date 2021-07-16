@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->longText('description');
             $table->double('price');
             $table->boolean('active')->default('1');
+            $table->string('product_thumbnail')->default('product-photos/default-product-image.jpg');
             $table->timestamps();
         });
     }

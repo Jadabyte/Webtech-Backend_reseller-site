@@ -6,21 +6,28 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 d-flex flex-wrap justify-content-center">
-            @foreach($products as $product)
-            <div class="w-25 m-4 bg-white overflow-hidden shadow-sm sm:rounded-lg" style="background-image: url('/storage/{{ $product->product_image_path }}'); background-size: cover; background-position: center;">
-                <div class="pt-40 border-b border-gray-200">
-                    <p class="bg-white rounded-top d-inline p-3 pt-2">€ {{ $product->price }}</p>
-                    <div class="bg-white p-4 pt-3 pb-3">
-                        <a href="/product/{{ $product->product_id }}"><h3 class="text-lg text-truncate">{{ $product->title }}</h3></a>
-                        <div class="pl-2">
-                            <p>Category: <a href="/{{ $product->category_name }}">{{ $product->category_name }}</a></p>
-                            <p>Posted by: <a href="/profile/{{ $product->user_id }}">{{ $product->name }}</a></p>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if(session()->has('message'))
+                <div class="alert alert-danger m-4">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
+            <div class="d-flex flex-wrap justify-content-center">
+                @foreach($products as $product)
+                <div class="w-25 m-4 bg-white overflow-hidden shadow-sm sm:rounded-lg" style="background-image: url('/storage/{{ $product->product_thumbnail }}'); background-size: cover; background-position: center;">
+                    <div class="pt-40 border-b border-gray-200">
+                        <p class="bg-white rounded-top d-inline p-3 pt-2">€ {{ $product->price }}</p>
+                        <div class="bg-white p-4 pt-3 pb-3">
+                            <a href="/product/{{ $product->product_id }}"><h3 class="text-lg text-truncate">{{ $product->title }}</h3></a>
+                            <div class="pl-2">
+                                <p>Category: <a href="/{{ $product->category_name }}">{{ $product->category_name }}</a></p>
+                                <p>Posted by: <a href="/profile/{{ $product->user_id }}">{{ $product->name }}</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </div>
 </x-app-layout>
