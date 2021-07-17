@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HEREController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,8 @@ Route::post('/product/create', [ProductController::class, 'createProduct'])->mid
 Route::get('/product/{id}/edit', [ProductController::class, 'showEditProduct'])->middleware(['auth']);
 Route::post('/product/{id}/edit', [ProductController::class, 'editProduct'])->middleware(['auth']);
 Route::post('/product/{id}/remove', [ProductController::class, 'removeProduct'])->middleware(['auth']);
+
+Route::get('/apitest', [HEREController::class, 'searchByAddress'])->middleware(['auth']);
 
 Route::get('/product/{id}', [ProductController::class, 'showProduct'])->middleware(['auth']);
 Route::get('/{category}', [ProductController::class, 'showCategory'])->middleware(['auth']);

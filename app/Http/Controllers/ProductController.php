@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\UploadTrait;
+use App\Http\Controllers\HEREController;
 
 class ProductController extends Controller
 {
@@ -142,6 +143,9 @@ class ProductController extends Controller
         ]);
 
         //-Create a new product----------
+        $latLng = (new HEREController)->searchByAddress($request->postCode, $request->country);
+        $latLng = $latLng[0];
+
         $product = new Product;
 
         $product->title = $request->title;
@@ -150,6 +154,8 @@ class ProductController extends Controller
 
         $product->user_id = Auth::id();
         $product->product_category_id = $request->category;
+        $product->lat = $latLng['lat'];
+        $product->lng = $latLng['lng'];
 
         $product->save();
 

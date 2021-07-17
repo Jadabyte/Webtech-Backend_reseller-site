@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->double('price');
             $table->boolean('active')->default('1');
             $table->string('product_thumbnail')->default('product-photos/default-product-image.jpg');
+            $table->double('lat')->nullable();
+            $table->double('lng')->nullable();
             $table->timestamps();
         });
     }

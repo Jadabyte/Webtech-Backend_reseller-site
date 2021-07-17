@@ -47,6 +47,17 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="mt-3">
+                    <h3 class="text-lg mb-2">6. Location</h3>
+                    <div class="d-flex flex-column w-25 mt-3 mr-10">
+                        <label class="text-lg mb-2" for="postCode">Postal Code</label>
+                        <input class="p-2" value="{{ old('postCode') }}" type="text" name="postCode" id="postCode" placeholder="Enter your postal code">
+                    </div>
+                    <div class="d-flex flex-column w-25 mt-3 mr-10">
+                        <label class="text-lg mb-2" for="country">Country</label>
+                        <input class="p-2" value="{{ old('country') }}" type="text" name="country" id="country" placeholder="Enter your country">
+                    </div>
+                </div>
             </div>
             <div class="text-right mt-10 w-25">
                 <input class="btn btn-primary text-white text-lg" type="submit" value="Post Listing">
