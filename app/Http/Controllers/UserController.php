@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\HEREController;
 use App\Models\User;
 use App\Models\Product;
 use App\Traits\UploadTrait;
@@ -34,7 +35,9 @@ class UserController extends Controller
                 'products.created_at',
             ]);
 
-        return view('profile.show', compact('user', 'userProducts'));
+        $address = explode("+", $user['address']);
+
+        return view('profile.show', compact('user', 'userProducts', 'address'));
     }
 
     public static function friendlyDate($rawDate){
@@ -48,14 +51,21 @@ class UserController extends Controller
 
     public function showEditProfile(){
         $user = User::find(Auth::id());
+        $address = explode("+", $user['address']);
 
-        return view('profile.edit', compact('user'));
+        return view('profile.edit', compact('user', 'address'));
     }
 
     public function editProfile(Request $request){
         $user = User::find(Auth::id());
 
+        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+        $latLng = $location['coordinates'];
+
         $user->name = $request->name;
+        $user->lat = $latLng['lat'];
+        $user->lng = $latLng['lng'];
+        $user->address = implode("+", $location['address']);
 
         if (($request->avatar) != null) {
             $image = $request->file('avatar');

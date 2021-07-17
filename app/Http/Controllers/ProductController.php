@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\ProductImages;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
@@ -40,13 +41,19 @@ class ProductController extends Controller
             'products.price',
             'product_categories.name as category_name',
             'products.created_at',
+            'products.address',
         ]);
+
+        $user = User::select(['address', 'user_avatar_path', 'name', 'created_at', 'id'])
+            ->find($product['user_id']);
+        
+        $address = explode("+", $product['address']);
 
         $productImages = ProductImages::where('product_id', $id)
             ->where('active', 1)
             ->get('product_image_path');
 
-        return view('product.show', compact('product', 'productImages'));
+        return view('product.show', compact('product', 'productImages', 'user', 'address'));
     }
 
     public function showEditProduct($id){

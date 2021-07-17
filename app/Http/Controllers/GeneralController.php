@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImages;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class GeneralController extends Controller
 {
@@ -25,8 +26,31 @@ class GeneralController extends Controller
                 'product_categories.name as category_name', // use 'as [column name]' when selecting columns
                 'products.product_thumbnail',               // with the same name
                 'products.created_at',
+                'products.lat',
+                'products.lng',
             ]);
-        return view('dashboard', compact('products'));
+
+        $user = Auth::user();
+        $userLat = $user['lat'];
+        $userLng = $user['lng'];
+
+
+        $resultsFilteredByDistance = [];
+        foreach($products as $product){
+            $productLat = $product['lat'];
+            $productLng = $product['lng'];
+            
+            $distanceMeters = GeneralController::haversineGreatCircleDistance($userLat, $userLng, $productLat, $productLng);
+            $distanceKilometers = round($distanceMeters/1000);
+
+            if($distanceKilometers < 10){
+                array_push($resultsFilteredByDistance, $product);
+            }
+        }
+        $products = $resultsFilteredByDistance;
+        $address = explode("+", $user['address'])[1];
+        
+        return view('dashboard', compact('products', 'address'));
     }
 
     public function showResults(Request $request){

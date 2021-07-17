@@ -14,7 +14,7 @@
         <form action="/profile/edit" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="d-flex flex-column w-25 mt-3">
-                <label for="name" class="text-lg mb-2">Name</label>
+                <label for="name" class="text-lg mb-2">Name:</label>
                 <input value="{{ $user->name }}" class="p-2" type="text" name="name" id="name">
             </div>
 
@@ -26,8 +26,20 @@
                 </div>
 
                 <div class="d-flex flex-column w-25 mt-3">
-                    <label for="image" class="text-lg mb-2">Your Profile Image</label>
+                    <label for="image" class="text-lg mb-2">Your Profile Image:</label>
                     <input type="file" name="avatar" id="avatar">
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <h3 class="text-lg mb-2">Location:</h3>
+                <div class="d-flex flex-column w-25 r-10">
+                    <label class="text-md mb-2" for="postCode">Postal Code</label>
+                    <input class="p-2" value="{{ $address[0] }}" type="text" name="postCode" id="postCode" placeholder="Enter your postal code">
+                </div>
+                <div class="d-flex flex-column w-25 mt-3 mr-10">
+                    <label class="text-md mb-2" for="country">Country</label>
+                    <input class="p-2" value="{{ $address[3] }}" type="text" name="country" id="country" placeholder="Enter your country">
                 </div>
             </div>
 

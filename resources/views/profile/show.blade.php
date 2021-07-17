@@ -8,12 +8,19 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 d-flex justify-content-center">
         <div class="text-center mt-4 pr-5 border-end">
             <h2 class="mb-4 text-xl">User Details:</h2>
-            <div class="bg-image mb-4 w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
+            <div class="bg-image mb-2 w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
                 style="background-image: url('/storage/{{ $user->user_avatar_path }}'); 
                         background-size: cover; 
                         background-position: center;">
             </div>
-            <h3>Member since: {{ App\Http\Controllers\UserController::friendlyDate($user->created_at) }}</h3>
+            <div class="mb-2">
+                <h3 class="underline text-lg">Location:</h3>
+                <p>{{ $address[1] }}, {{ $address[3] }}</p>
+            </div>
+            <div class="mb-2">
+                <h3 class="underline text-lg">Member since:</h3>
+                <p>{{ App\Http\Controllers\UserController::friendlyDate($user->created_at) }}</p>
+            </div>
         </div>
         <div class="w-full">
             <h2 class="m-4 mb-0 text-xl">User Listings:</h2>
