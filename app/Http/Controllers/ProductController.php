@@ -143,8 +143,8 @@ class ProductController extends Controller
         ]);
 
         //-Create a new product----------
-        $latLng = (new HEREController)->searchByAddress($request->postCode, $request->country);
-        $latLng = $latLng[0];
+        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+        $latLng = $location['coordinates'];
 
         $product = new Product;
 
@@ -156,6 +156,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->category;
         $product->lat = $latLng['lat'];
         $product->lng = $latLng['lng'];
+        $product->address = implode("+", $location['address']);
 
         $product->save();
 

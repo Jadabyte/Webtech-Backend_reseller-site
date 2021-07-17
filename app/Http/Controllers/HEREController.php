@@ -16,12 +16,35 @@ class HEREController extends Controller
         
         $result = $addressResults[0];
 
+        $address = $result['address']['label'];
+        $addressItems = explode(", ", $address);
+
         $latitude = $result['position']['lat'];
         $longitude = $result['position']['lng'];
-        $latLong = [
-            'lat' => $latitude, 
-            'lng' => $longitude];
 
-        return [$latLong];
+
+        $location = [
+            'coordinates' => 
+                ['lat' => $latitude, 
+                'lng' => $longitude],
+            'address' =>
+                ['postCode' => $addressItems[0],
+                'city' => $addressItems[1],
+                'county' => $addressItems[2],
+                'country' => $addressItems[3]]    
+            ];
+        return $location;
+    }
+
+    public function searchByCoordinates($lat, $long){
+        $apiKey = '&apiKey=' . config('services.here.token');
+
+        $coordinates = $lat . '%2C' . $lng;
+
+        $coordinateResults = Http::get('https://geocode.search.hereapi.com/v1/revgeocode?at=' . $coordinates . $apiKey)
+            ->json(['items']);
+        $coordinateResults = $coordinateResults[0];
+
+        dd($coordinateResults);
     }
 }

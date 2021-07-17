@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('product_thumbnail')->default('product-photos/default-product-image.jpg');
             $table->double('lat')->nullable();
             $table->double('lng')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
