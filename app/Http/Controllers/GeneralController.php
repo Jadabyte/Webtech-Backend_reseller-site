@@ -15,6 +15,7 @@ class GeneralController extends Controller
         $products = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
             ->join('users', 'products.user_id', 'users.id')
             ->where('products.active', 1)
+            ->orderBy('created_at', 'desc')
             ->get([
                 'users.id as user_id',
                 'users.name',
@@ -31,25 +32,31 @@ class GeneralController extends Controller
             ]);
 
         $user = Auth::user();
-        $userLat = $user['lat'];
-        $userLng = $user['lng'];
 
-
-        $resultsFilteredByDistance = [];
-        foreach($products as $product){
-            $productLat = $product['lat'];
-            $productLng = $product['lng'];
-            
-            $distanceMeters = GeneralController::haversineGreatCircleDistance($userLat, $userLng, $productLat, $productLng);
-            $distanceKilometers = round($distanceMeters/1000);
-
-            if($distanceKilometers < 10){
-                array_push($resultsFilteredByDistance, $product);
+        if($user['lat']){
+            $userLat = $user['lat'];
+            $userLng = $user['lng'];
+    
+    
+            $resultsFilteredByDistance = [];
+            foreach($products as $product){
+                $productLat = $product['lat'];
+                $productLng = $product['lng'];
+                
+                $distanceMeters = GeneralController::haversineGreatCircleDistance($userLat, $userLng, $productLat, $productLng);
+                $distanceKilometers = round($distanceMeters/1000);
+    
+                if($distanceKilometers < 10){
+                    array_push($resultsFilteredByDistance, $product);
+                }
             }
+            $products = $resultsFilteredByDistance;
+            $address = explode("+", $user['address'])[1];
         }
-        $products = $resultsFilteredByDistance;
-        $address = explode("+", $user['address'])[1];
-        
+        else{
+            $address = null;
+        }
+
         return view('dashboard', compact('products', 'address'));
     }
 

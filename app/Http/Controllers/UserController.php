@@ -57,6 +57,11 @@ class UserController extends Controller
     }
 
     public function editProfile(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'postCode' => 'required',
+            'country' => 'required',
+        ]);
         $user = User::find(Auth::id());
 
         $location = (new HEREController)->searchByAddress($request->postCode, $request->country);

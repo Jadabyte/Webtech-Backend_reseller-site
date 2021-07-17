@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\ProductImages;
 use App\Models\ProductCategory;
+use App\Models\ProductFavorite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\UploadTrait;
@@ -18,13 +19,15 @@ class ProductController extends Controller
 
     public function showCreate(){
         $categories = ProductCategory::get();
+        $user = Auth::user();
+        $address = explode("+", $user['address']);
 
         $allCategories = [];
         foreach($categories as $category){
             array_push($allCategories, $category['name']);
         }
         //if you use the IDs in the view, remember to +1 since an array starts at 0, while the database ID starts at 1
-        return view('product.create', compact('allCategories'));
+        return view('product.create', compact('allCategories', 'address'));
     }
 
     public function showProduct($id){
@@ -70,8 +73,10 @@ class ProductController extends Controller
             'products.price',
             'product_categories.id as category_id',
             'products.created_at',
+            'products.address',
         ]);
         
+        $address = explode("+", $product['address']);
         $categories = ProductCategory::get();
 
         $allCategories = [];
@@ -83,21 +88,30 @@ class ProductController extends Controller
             ->where('active', 1)
             ->get('product_image_path');
 
-        return view('product.edit', compact('product', 'productImages', 'allCategories'));
+        return view('product.edit', compact('product', 'productImages', 'allCategories', 'address'));
     }
 
     public function editProduct(Request $request, $id){
+        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+        $latLng = $location['coordinates'];
+
         $product = Product::find($id);
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required',
+            'category' => 'required',
+            'postCode' => 'required',
+            'country' => 'required',
         ]);
 
         $product->product_category_id = $request->category;
         $product->title = $request->title;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->lat = $latLng['lat'];
+        $product->lng = $latLng['lng'];
+        $product->address = implode("+", $location['address']);
 
         if (($request->product_img) != null) {
             if($request->removeImages == 'on'){
@@ -147,6 +161,9 @@ class ProductController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required',
+            'category' => 'required',
+            'postCode' => 'required',
+            'country' => 'required',
         ]);
 
         //-Create a new product----------
@@ -258,5 +275,30 @@ class ProductController extends Controller
         $categories = ProductCategory::get();
 
         return $categories;
+    }
+
+    public function favoriteProduct($productId){
+        $favorite = ProductFavorite::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
+
+        if($favorite){
+            if($favorite['favorite'] == 1){
+                $favorite->favorite = 0;
+            }
+            else{
+                $favorite->favorite = 1;
+            }
+        }
+        else{
+            $favorite = new ProductFavorite;
+
+            $favorite->user_id = Auth::id();
+            $favorite->product_id = $productId;
+            $favorite->favorite = 1;
+        }
+
+        $favorite->save();
+        return response()->json(['status', 1]);
     }
 }
