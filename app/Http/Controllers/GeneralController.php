@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImages;
+use App\Models\ProductFavorite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,9 +31,8 @@ class GeneralController extends Controller
                 'products.lat',
                 'products.lng',
             ]);
-
+        
         $user = Auth::user();
-
         if($user['lat']){
             $userLat = $user['lat'];
             $userLng = $user['lng'];
@@ -58,6 +58,15 @@ class GeneralController extends Controller
         }
 
         return view('dashboard', compact('products', 'address'));
+    }
+
+    public static function checkFavorite($productId){
+        $checkFavorite = ProductFavorite::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->where('favorite', 1)
+            ->count();
+            
+        return $checkFavorite;
     }
 
     public function showResults(Request $request){
