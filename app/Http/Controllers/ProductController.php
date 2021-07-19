@@ -277,6 +277,30 @@ class ProductController extends Controller
         return $categories;
     }
 
+    public function showFavoriteProducts(){
+        $favorites = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
+            ->join('users', 'products.user_id', 'users.id')
+            ->join('product_favorites', 'product_favorites.product_id', 'products.id')
+            ->where('product_favorites.user_id', Auth::id())
+            ->where('product_favorites.favorite', 1)
+            ->where('products.active', 1)
+            ->get([
+                'users.id as user_id',
+                'users.name',
+                'users.user_avatar_path',
+                'products.id as product_id',
+                'products.title',
+                'products.price',
+                'products.description',
+                'product_categories.name as category_name', // use 'as [column name]' when selecting columns
+                'products.product_thumbnail',        // with the same name
+                'products.created_at',
+            ]);
+        $products = $favorites;
+
+        return view('product.favorites', compact('products'));
+    }
+
     public function favoriteProduct($productId){
         $favorite = ProductFavorite::where('user_id', Auth::id())
             ->where('product_id', $productId)

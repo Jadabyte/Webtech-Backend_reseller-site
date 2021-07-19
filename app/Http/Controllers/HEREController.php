@@ -22,7 +22,6 @@ class HEREController extends Controller
         $latitude = $result['position']['lat'];
         $longitude = $result['position']['lng'];
 
-
         $location = [
             'coordinates' => 
                 ['lat' => $latitude, 

@@ -7,6 +7,9 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 d-flex flex-wrap justify-content-center">
+            @if(empty($products[0]))
+                <p class="alert alert-info m-4 mt-0">There are currently no listings in the {{ request()->route('category') }} category, <a class="underline" href="/dashboard">return home</a>.</p>
+            @endif
             @foreach($products as $product)
                 @include('components.product')
             @endforeach

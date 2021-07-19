@@ -38,7 +38,9 @@ Route::post('/product/create', [ProductController::class, 'createProduct'])->mid
 Route::get('/product/{id}/edit', [ProductController::class, 'showEditProduct'])->middleware(['auth']);
 Route::post('/product/{id}/edit', [ProductController::class, 'editProduct'])->middleware(['auth']);
 Route::post('/product/{id}/remove', [ProductController::class, 'removeProduct'])->middleware(['auth']);
+
 Route::get('/favorite/{productId}', [ProductController::class, 'favoriteProduct']);
+Route::get('/favorites', [ProductController::class, 'showFavoriteProducts']);
 
 Route::get('/apitest', [HEREController::class, 'searchByAddress'])->middleware(['auth']);
 

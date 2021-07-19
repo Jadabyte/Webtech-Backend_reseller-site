@@ -69,6 +69,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link href="/favorites">
+                            {{ __('View Favorites') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link href="/profile/{{ Auth::id() }}">
                             {{ __('View Profile') }}
                         </x-dropdown-link>
@@ -80,7 +84,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
+                            <x-dropdown-link class="text text-danger" :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}

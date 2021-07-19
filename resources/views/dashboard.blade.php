@@ -21,8 +21,11 @@
                     <a class="underline" href="/profile/edit">Complete your profile</a>
                 </div>
             @endif
-            
+
             <div class="d-flex flex-wrap justify-content-center">
+                @if(empty($products[0]))
+                    <p class="alert alert-info m-4 mt-0">There are currently no products being sold in your area.</p>
+                @endif
                 @foreach($products as $product)
                     @include('components.product')
                 @endforeach
