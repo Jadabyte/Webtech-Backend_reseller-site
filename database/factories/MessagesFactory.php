@@ -22,6 +22,7 @@ class MessagesFactory extends Factory
     public function definition()
     {
         return [
+            'product_id' => $this->faker->numberBetween($min = 1, $max = 10),
             'user_id' => $this->faker->numberBetween($min = 1, $max = 10),
             'message' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
         ];

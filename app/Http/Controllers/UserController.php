@@ -49,6 +49,17 @@ class UserController extends Controller
         return $friendlyDate;
     }
 
+    public static function friendlyDateTime($rawDate){
+        $dateArray = explode("-", substr($rawDate, 0, -9));
+        $dateArray = array_reverse($dateArray);
+
+        $time = substr($rawDate, 11, -3);
+
+        $friendlyDateTime = ($dateArray[0] . "/" . $dateArray[1] . "/" . $dateArray[2]) . " - " . $time;
+
+        return $friendlyDateTime;
+    }
+
     public function showEditProfile(){
         $user = User::find(Auth::id());
         $address = explode("+", $user['address']);
