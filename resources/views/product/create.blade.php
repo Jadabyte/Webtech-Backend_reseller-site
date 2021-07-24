@@ -51,11 +51,11 @@
                     <h3 class="text-lg mb-2">6. Location</h3>
                     <div class="d-flex flex-column w-25 r-10">
                         <label class="text-lg mb-2" for="postCode">Postal Code<span class="text-danger"> *</span></label>
-                        <input class="p-2" value="{{ $address[0] }}" type="text" name="postCode" id="postCode" placeholder="Enter your postal code">
+                        <input class="p-2" value="{{ $address[0] ?? '' }}" type="text" name="postCode" id="postCode" placeholder="Enter your postal code">
                     </div>
                     <div class="d-flex flex-column w-25 mt-3 mr-10">
                         <label class="text-lg mb-2" for="country">Country<span class="text-danger"> *</span></label>
-                        <input class="p-2" value="{{ $address[3] }}" type="text" name="country" id="country" placeholder="Enter your country">
+                        <input class="p-2" value="{{ $address[3] ?? '' }}" type="text" name="country" id="country" placeholder="Enter your country">
                     </div>
                 </div>
             </div>

@@ -20,8 +20,8 @@
                 </form>
             </div>
         @else
-            <div class="pb-2 d-flex align-items-center border-bottom">
-                <a class="ml-2 btn btn-primary text-white" href="/product/{{ $product->product_id }}/edit">Message user</a>
+            <div class="pb-2 d-flex align-items-center justify-content-end border-bottom">
+                <a class="ml-2 btn btn-primary text-white" href="/chat/{{ $product->product_id }}/new">Message product owner</a>
             </div>
         @endif
         <div class="d-flex justify-content-center w-full">

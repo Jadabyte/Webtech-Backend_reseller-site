@@ -57,7 +57,7 @@
             <div class="flex align-center">
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('chat')" :active="request()->routeIs('chat')">
-                        {{ __('Chat') }}
+                        {{ __('Messages') }}
                     </x-nav-link>
                 </div>
 

@@ -11,8 +11,8 @@
                 {{ session()->get('message') }}
             </div>
         @endif
-        <div class="flex border rounded pb-4 bg-info">
-            <div class="bg-primary w-25">
+        <div class="flex border rounded bg-info">
+            <div class="bg-primary w-25 pb-4">
             @foreach($chats as $chat)
                 <div class="p-4 pb-0">
                     <div class="pb-2">
@@ -26,12 +26,13 @@
                 </div>
             @endforeach
             </div>
-            <div class="bg-secondary w-75 flex flex-column">
-                <div id="messages">
-
+            <div class="bg-secondary w-75 d-flex flex-column p-4">
+                <div id="messages" class="h-100">
+                    <p>Message</p>
                 </div>
-                <form action="/chat/{{ $chat->product_id }}" method="post">
-                    <input type="text" placeholder="Send a message">
+                <form action="/chat/{{ $chat->product_id }}/{{ $chat->user_id }}" method="post" class="align-self-baseline w-100">
+                    @csrf
+                    <input type="text" name="message" placeholder="Send a message">
                     <button type="submit">Send</button>
                 </form>
             </div>
