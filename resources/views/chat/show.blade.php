@@ -11,30 +11,44 @@
                 {{ session()->get('message') }}
             </div>
         @endif
-        <div class="flex border rounded bg-info">
-            <div class="bg-primary w-25 pb-4">
-            @foreach($chats as $chat)
-                <div class="p-4 pb-0">
-                    <div class="pb-2">
-                        <h3>{{ $chat->title }}</h3>
-                        <h3>Posted by: {{ $chat->name }}</h3>
-                    </div>
-                    <div>
-                        <p>{{ $chat->message }}</p>
-                        <p>{{ App\Http\Controllers\UserController::friendlyDateTime($chat->created_at) }}</p>
-                    </div>
+        <div class="flex justify-content-between">
+            <div class="w-50">
+                <h3 class="text-xl pb-1 mb-4 w-50" style="border-bottom: 2px solid #3490DC;">Buying</h3>
+                <div class="w-50 pb-4">
+                    @foreach($buyingChats as $chat)
+                    <a href="/chat/{{ $chat->product_id }}/{{ $chat->user_id }}/thread" class="mt-4 p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg d-block cursor-pointer">
+                        <div>
+                            <div class="mb-2">
+                                <h3>{{ $chat->title }}</h3>
+                                <h3>Posted by: {{ $chat->name }}</h3>
+                            </div>
+                            <div>
+                                <p>"{{ $chat->message }}"</p>
+                                <p>{{ App\Http\Controllers\UserController::friendlyDateTime($chat->created_at) }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
                 </div>
-            @endforeach
             </div>
-            <div class="bg-secondary w-75 d-flex flex-column p-4">
-                <div id="messages" class="h-100">
-                    <p>Message</p>
+            <div class="w-50 d-flex flex-column align-items-end">
+                <h3 class="text-xl pb-1 w-50 text-right" style="border-bottom: 2px solid #3490DC;">Selling</h3>
+                <div class="w-50 pb-4">
+                    @foreach($sellingChats as $chat)
+                    <a href="/chat/{{ $chat->product_id }}/{{ $chat->user_id }}/thread" class="mt-4 p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg d-block cursor-pointer">
+                        <div>
+                            <div class="mb-2">
+                                <h3>{{ $chat->title }}</h3>
+                                <h3>Posted by: {{ $chat->name }}</h3>
+                            </div>
+                            <div>
+                                <p>{{ $chat->message }}</p>
+                                <p>{{ App\Http\Controllers\UserController::friendlyDateTime($chat->created_at) }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
                 </div>
-                <form action="/chat/{{ $chat->product_id }}/{{ $chat->user_id }}" method="post" class="align-self-baseline w-100">
-                    @csrf
-                    <input type="text" name="message" placeholder="Send a message">
-                    <button type="submit">Send</button>
-                </form>
             </div>
         </div>
     </main>

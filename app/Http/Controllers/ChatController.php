@@ -11,9 +11,36 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     public function showChats(){
-        $chats = Messages::where('messages.user_id', Auth::id())
+        $buyingChats = Messages::where('messages.user_id', Auth::id())
             ->join('products', 'products.id', 'messages.product_id')
             ->join('users', 'users.id', 'products.user_id')
+            ->orderBy('created_at', 'desc')
+            ->where('products.active', 1)
+            ->get([
+                'messages.product_id',
+                'messages.user_id',
+                'messages.message',
+                'messages.created_at',
+                'users.name',
+                'products.title',
+            ]);
+        //only return most recent message in a conversation
+        $productId = null;
+        $buyingChatsFirstMessage = [];
+        foreach($buyingChats as $chat){
+            if($productId != $chat->product_id){
+                $productId = $chat->product_id;
+
+                array_push($buyingChatsFirstMessage, $chat);
+            }
+        }
+        $buyingChats = $buyingChatsFirstMessage;
+
+        $sellingChats = Messages::join('products', 'products.id', 'messages.product_id')
+            ->join('users', 'users.id', 'products.user_id')
+            ->orderBy('created_at', 'desc')
+            ->where('products.user_id', Auth::id())
+            ->where('products.active', 1)
             ->get([
                 'messages.product_id',
                 'messages.user_id',
@@ -23,7 +50,39 @@ class ChatController extends Controller
                 'products.title',
             ]);
 
-        return view('chat.show', compact('chats'));
+        
+        $productId = null;
+        $sellingChatsFirstMessage = [];
+        foreach($sellingChats as $chat){
+            if($productId != $chat->product_id){
+                $productId = $chat->product_id;
+
+                array_push($sellingChatsFirstMessage, $chat);
+            }
+        }
+        $sellingChats = $sellingChatsFirstMessage;
+
+        return view('chat.show', compact('buyingChats', 'sellingChats'));
+    }
+
+    public function showThread($productId, $userId){
+        $product = Product::where('products.id', $productId)
+        ->join('users', 'products.user_id', 'users.id')
+        ->first([
+            'products.title',
+            'users.name',
+            'products.id as product_id',
+            'users.id as user_id',
+        ]);
+
+        $messages = Messages::join('products', 'products.id', 'messages.product_id')
+            ->where('messages.user_id', Auth::id())
+            ->orWhere('products.user_id', Auth::id())
+            ->where('messages.product_id', $productId)
+            ->where('messages.user_id', $userId)
+            ->get();
+
+        return view('chat.thread', compact('product', 'messages'));
     }
 
     public function createChatShow($productId){
@@ -47,22 +106,30 @@ class ChatController extends Controller
     public function sendMessage(Request $request, $productId){
         $message = new Messages;
 
-        $chatExists = Messages::where('product_id', $productId)
-            ->where('user_id', Auth::id())
-            ->first();
+        $chatExists = Messages::where('messages.product_id', $productId)
+            ->join('products', 'messages.product_id', 'products.id')
+            ->where('messages.user_id', Auth::id())
+            ->orWhere('products.user_id', Auth::id())
+            ->first([
+                'messages.user_id as message_user_id',
+                'products.user_id as product_user_id',
+            ]);
 
         if($chatExists){
-            $message->user_id = $chatExists('user_id');
+            $message->user_id = $chatExists->message_user_id;
         }
         else{
             $message->user_id = Auth::id();
+        }
+
+        if($chatExists->product_user_id == Auth::id()){
+            $message->product_owner = true;
         }
 
         $message->product_id = $productId;
         $message->message = $request->message;
 
         $message->save();
-        session()->flash("message","Your message has been sent, you will be notified when the product owner sends a reply.");
-        return redirect('/chat/' . $productId . '/new');
+        return response()->json(['status', 1]);
     }
 }

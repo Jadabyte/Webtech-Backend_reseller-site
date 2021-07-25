@@ -17,7 +17,7 @@
                     @csrf
                     <div class="pt-0">
                         <label for="message"></label>
-                        <textarea class="w-100 p-2" name="message" id="" rows="10" placeholder="Write a message"></textarea>
+                        <textarea class="w-100 p-2" name="message" id="" rows="10" placeholder="Write a message" autofocus></textarea>
                     </div>
                     <div class="text-right">
                         <button class="m-4 mb-2 btn btn-primary text-white" type="submit">Send message</button>

@@ -15,7 +15,7 @@
             </div>
             <div class="mb-2">
                 <h3 class="underline text-lg">Location:</h3>
-                <p>{{ $address[1] }}, {{ $address[3] }}</p>
+                <p>{{ $address[1] ?? '' }}, {{ $address[3] ?? '' }}</p>
             </div>
             <div class="mb-2">
                 <h3 class="underline text-lg">Member since:</h3>
@@ -25,7 +25,7 @@
         <div class="w-full">
             <h2 class="m-4 mb-0 text-xl">User Listings:</h2>
             <div class="d-flex flex-wrap">
-            @if(empty($products[0]))
+            @if(empty($userProducts[0]))
                 <p class="alert alert-info m-4">You currently do not have any listings, <a class="underline" href="/product/create">create one by clicking here</a>.</p>
             @endif
             @foreach($userProducts as $product)

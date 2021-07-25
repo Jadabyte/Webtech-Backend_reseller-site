@@ -44,10 +44,10 @@ Route::get('/favorite/{productId}', [ProductController::class, 'favoriteProduct'
 Route::get('/favorites', [ProductController::class, 'showFavoriteProducts']);
 
 Route::get('/chat', [ChatController::class, 'showChats'])->middleware(['auth'])->name('chat');
-Route::post('/chat/{productId}/{userId}', [ChatController::class, 'sendMessage'])->middleware(['auth']);
+Route::get('/chat/{productId}/{userId}', [ChatController::class, 'sendMessage'])->middleware(['auth']);
+Route::get('/chat/{productId}/{userId}/thread', [ChatController::class, 'showThread'])->middleware(['auth']);
 
 Route::get('/chat/{productId}/new', [ChatController::class, 'createChatShow'])->middleware(['auth']);
-Route::post('/chat/{productId}/new', [ChatController::class, 'createChat'])->middleware(['auth']);
 
 Route::get('/product/{id}', [ProductController::class, 'showProduct'])->middleware(['auth']);
 Route::get('/{category}', [ProductController::class, 'showCategory'])->middleware(['auth']);

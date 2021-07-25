@@ -18,6 +18,7 @@ class CreateMessagesTable extends Migration
             $table->foreignId('product_id')->references('id')->on('products');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->mediumText('message');
+            $table->boolean('product_owner')->nullable();
             $table->timestamps();
         });
     }
