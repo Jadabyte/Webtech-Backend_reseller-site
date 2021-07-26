@@ -35,6 +35,9 @@
                 <div>
                     <div class="d-flex flex-column w-full mt-3">
                         <label for="image" class="text-lg mb-2">3. Photos</label>
+                        <p id="preview_message" class="mb-3 hidden"></p>
+                        <div id="image_preview"></div>
+                        <p id="preview_message_old" class="mb-3 hidden"></p>
                         <div class="d-flex flex-wrap w-full">
                             @foreach($productImages as $image)
                                 <div class="bg-image w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded mr-3 mb-3 d-inline" 
@@ -89,6 +92,34 @@
 
 <script>
     $( document ).ready(function(){
+        $('#product_img').on('change', function(input){
+            var file = $("input[type=file]").get(0).files[0];
+    
+            if(file){
+                if(file.size > 2048 * 2048){
+                    this.errors = [];
+                    this.errors.push("Your avatar must be less than 2mb");
+                }
+                else{
+                    var reader = new FileReader();
+                    reader.onload = function(){
+                        $("#image_preview").append('<div class="mr-3 mb-3" id="thumbnail"></div>');
+                        $("#thumbnail").css({
+                            'background' : 'url(' + reader.result + ')',
+                            'background-size' : 'cover',
+                            'background-position' : 'center',
+                            'width' : '150px',
+                            'height' : '150px',
+                        });
+                        $("#preview_message").text("New images. A total of " + $("input[type=file]").get(0).files.length + " images were uploaded.");
+                        $("#preview_message").toggleClass('hidden');
+                        $("#preview_message_old").text("Current images. You can remove existing images by using the checkbox below.");
+                        $("#preview_message_old").toggleClass('hidden');
+                    }
         
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
     });
 </script>

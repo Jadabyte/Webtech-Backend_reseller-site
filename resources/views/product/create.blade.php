@@ -29,6 +29,8 @@
 
                 <div class="d-flex flex-column w-25 mt-3">
                     <label for="image" class="text-lg mb-2">3. Add some images<span class="text-danger"> *</span></label>
+                    <div id="image_preview"></div>
+                    <p id="preview_message" class="mb-3"></p>
                     <input value="{{ old('product_img') }}" type="file" name="product_img[]" id="product_img" multiple>
                 </div>
                 <div class="d-flex flex-wrap">
@@ -68,6 +70,32 @@
 
 <script>
     $( document ).ready(function(){
+        $('#product_img').on('change', function(input){
+            var file = $("input[type=file]").get(0).files[0];
+    
+            if(file){
+                if(file.size > 2048 * 2048){
+                    this.errors = [];
+                    this.errors.push("Your avatar must be less than 2mb");
+                }
+                else{
+                    var reader = new FileReader();
+                    reader.onload = function(){
+                        $("#image_preview").append('<div class="mr-3 mb-3" id="thumbnail"></div>');
+                        $("#thumbnail").css({
+                            'background' : 'url(' + reader.result + ')',
+                            'background-size' : 'cover',
+                            'background-position' : 'center',
+                            'width' : '150px',
+                            'height' : '150px',
+                        });
+                        $("#thumbnail").addClass('rounded');
+                        $("#preview_message").text("This is your product's thumbnail. A total of " + $("input[type=file]").get(0).files.length + " images were uploaded.");
+                    }
         
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
     });
 </script>

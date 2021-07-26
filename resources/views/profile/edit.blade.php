@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="mt-3">
-                    <div class="bg-image w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
+                    <div id="avatarURL" class="bg-image w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
                         style="background-image: url('/storage/{{ $user->user_avatar_path }}'); 
                                 background-size: cover; 
                                 background-position: center;">
@@ -73,3 +73,30 @@
     </main>
 
 </x-app-layout>
+
+<script>
+    $( document ).ready(function(){
+        $('#avatar').on('change', function(input){
+            
+            var file = $("input[type=file]").get(0).files[0];
+    
+            if(file){
+                if(file.size > 2048 * 2048){
+                    this.errors = [];
+                    this.errors.push("Your avatar must be less than 2mb");
+                }
+                else{
+                    var reader = new FileReader();
+        
+                    reader.onload = function(){
+                        $("#avatarURL").css("background", 'url(' + reader.result + ')');
+                        $("#avatarURL").css("background-size", 'cover');
+                        $("#avatarURL").css("background-position", 'center');
+                    }
+        
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    });
+</script>

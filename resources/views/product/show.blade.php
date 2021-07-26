@@ -47,7 +47,7 @@
                     <h3 class="text-lg mb-2">Product Images:</h3>
                     <div class="d-flex flex-wrap">
                     @foreach($productImages as $image)
-                        <div class="bg-image pt-20 pb-20 pr-20 pl-20 mr-3 mb-3 " style="background-image: url('/storage/{{ $image->product_image_path }}'); background-size: cover; background-position: center;"></div>
+                        <div class="bg-image pt-20 pb-20 pr-20 pl-20 rounded mr-3 mb-3" style="background-image: url('/storage/{{ $image->product_image_path }}'); background-size: cover; background-position: center;"></div>
                     @endforeach
                     </div>
                 </div>

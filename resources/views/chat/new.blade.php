@@ -26,7 +26,6 @@
     </main>
 </x-app-layout>
 
-
 <script>
     $( document ).ready(function(){
         $('#send').on('click', function(e){
