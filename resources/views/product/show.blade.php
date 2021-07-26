@@ -21,7 +21,7 @@
             </div>
         @else
             <div class="pb-2 d-flex align-items-center justify-content-end border-bottom">
-                <a class="ml-2 btn btn-primary text-white" href="/chat/{{ $product->product_id }}/new">Message product owner</a>
+                <a class="ml-2 btn btn-primary text-white" href="/chat/{{ $product->product_id }}">Message product owner</a>
             </div>
         @endif
         <div class="d-flex justify-content-center w-full">

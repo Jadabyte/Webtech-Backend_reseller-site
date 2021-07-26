@@ -73,7 +73,7 @@
             var productId = $(this).data('product_id');
             var userId = $(this).data('user_id');
             var message = $('#message').val();
-            console.log(message);
+            
             $.ajax({
                 type: "GET",
                 url: '/chat/' + productId + '/' + userId,

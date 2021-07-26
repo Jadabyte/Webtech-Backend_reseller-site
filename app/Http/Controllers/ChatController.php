@@ -97,7 +97,7 @@ class ChatController extends Controller
             ->first([
                 'products.title',
                 'users.name',
-                'products.id as product_id'
+                'products.id as product_id',
             ]);
         
         return view('chat.new', compact('product'));
@@ -106,25 +106,29 @@ class ChatController extends Controller
     public function sendMessage(Request $request, $productId){
         $message = new Messages;
 
-        $chatExists = Messages::where('messages.product_id', $productId)
-            ->join('products', 'messages.product_id', 'products.id')
-            ->where('messages.user_id', Auth::id())
-            ->orWhere('products.user_id', Auth::id())
+        $chatExists = Messages::join('products', 'messages.product_id', 'products.id')
+            ->where('messages.product_id', $productId)
+            ->where(function ($query) {
+                $query->where('messages.user_id', Auth::id())
+                      ->orWhere('products.user_id', Auth::id());
+            })
             ->first([
                 'messages.user_id as message_user_id',
                 'products.user_id as product_user_id',
+                'messages.product_id',
             ]);
 
         if($chatExists){
             $message->user_id = $chatExists->message_user_id;
+
+            if($chatExists->product_user_id == Auth::id()){
+                $message->product_owner = true;
+            }
         }
         else{
             $message->user_id = Auth::id();
         }
 
-        if($chatExists->product_user_id == Auth::id()){
-            $message->product_owner = true;
-        }
 
         $message->product_id = $productId;
         $message->message = $request->message;
