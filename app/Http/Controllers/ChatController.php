@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Messages;
 use App\Models\Product;
+use App\Models\User;
+use App\Mail\ReplyReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ChatController extends Controller
 {
@@ -117,16 +120,40 @@ class ChatController extends Controller
                 'products.user_id as product_user_id',
                 'messages.product_id',
             ]);
+        
+        
+        $details = [
+            'userId' => Auth::id(),
+            'userName' => Auth::user()->name,
+            'productId' => $productId,
+            'productName' => Product::find($productId)->title,
+            'body' => $request->message,
+        ];
 
         if($chatExists){
             $message->user_id = $chatExists->message_user_id;
 
             if($chatExists->product_user_id == Auth::id()){
                 $message->product_owner = true;
+
+                Mail::to(User::find($chatExists->message_user_id)->email)
+                    ->send(new ReplyReceived($details));
+            }
+
+            else{
+                Mail::to(User::find($chatExists->product_user_id)->email)
+                ->send(new ReplyReceived($details));
             }
         }
         else{
             $message->user_id = Auth::id();
+
+            $userEmail = Product::join('users', 'users.id', 'products.user_id')
+                ->where('products.id', $productId)
+                ->first();
+
+            Mail::to($userEmail->email)
+                ->send(new ReplyReceived($details));
         }
 
 

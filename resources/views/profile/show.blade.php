@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        @if(session()->has('message'))
+            <div class="alert alert-danger m-4">
+                {{ session()->get('message') }}
+            </div>
+        @endif
+    </header>
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 d-flex justify-content-center">
         <div class="text-center mt-4 pr-5 border-end">
             <h2 class="mb-4 text-xl">User Details:</h2>

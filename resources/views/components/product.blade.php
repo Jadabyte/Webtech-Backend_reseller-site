@@ -1,4 +1,4 @@
-<div class="w-25 m-4 bg-white overflow-hidden shadow-sm sm:rounded-lg" style="background-image: url('/storage/{{ $product->product_thumbnail }}'); background-size: cover; background-position: center;">
+<div class="w-25 m-4 bg-white overflow-hidden shadow-sm sm:rounded-lg" style="background-image: url('/storage/{{ $product->product_thumbnail }}'); background-size: cover; background-position: center; min-width: 300px">
     <div class="pt-40 border-b border-gray-200">
         <div class="d-flex justify-content-between align-items-center">
             <p class="bg-white rounded-top d-inline p-3 pt-2 pb-2">€ {{ $product->price }}</p>

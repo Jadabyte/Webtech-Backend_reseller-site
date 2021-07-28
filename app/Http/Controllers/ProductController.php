@@ -231,8 +231,11 @@ class ProductController extends Controller
         $product->active = 0;
         $product->save();
 
-        $products = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
+        $user = Auth::user();
+
+        $userProducts = Product::join('product_categories','product_categories.id', '=', 'products.product_category_id')
             ->join('users', 'products.user_id', 'users.id')
+            ->where('products.user_id', Auth::id())
             ->where('products.active', 1)
             ->get([
                 'users.id as user_id',
@@ -242,13 +245,15 @@ class ProductController extends Controller
                 'products.title',
                 'products.description',
                 'products.price',
-                'product_categories.name as category_name', // use 'as [column name]' when selecting columns
-                'products.product_thumbnail',               // with the same name
+                'product_categories.name as category_name',
+                'products.product_thumbnail',
                 'products.created_at',
             ]);
+
+        $address = explode("+", $user['address']);
             
         session()->flash("message","Listing removed");
-        return view('/dashboard', compact('products'));
+        return view('profile.show', compact('user', 'userProducts', 'address'));
     }
 
     public function showCategory($category){
