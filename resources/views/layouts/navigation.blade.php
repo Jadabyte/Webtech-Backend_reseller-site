@@ -20,7 +20,7 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('productCreate')" :active="request()->routeIs('productCreate')">
-                        {{ __('Create a new listing') }}
+                        {{ __('New listing') }}
                     </x-nav-link>
                 </div>
 
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <form action="/search" class="w-25 d-flex align-items-center">
+            <form action="/search" class="sm:w-25 d-flex align-items-center">
                 <input class="w-full p-2 m-1 border rounded border-primary" name="search" placeholder="Search" type="text">
                 <input class="btn btn-primary text-white" type="submit" value="Search">
             </form>
@@ -119,13 +119,13 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Home') }}
             </x-responsive-nav-link>
         </div>
 
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('productCreate')" :active="request()->routeIs('productCreate')">
-                {{ __('Create a new listing') }}
+                {{ __('New listing') }}
             </x-responsive-nav-link>
         </div>
 
@@ -135,8 +135,26 @@
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
+            
+            <div class="mt-3 pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="/favorites">
+                    {{ __('View Favorites') }}
+                </x-responsive-nav-link>
+            </div>
+    
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="/profile/{{ Auth::id() }}">
+                    {{ __('View Profile') }}
+                </x-responsive-nav-link>
+            </div>
+    
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('profileEdit')">
+                    {{ __('Edit Profile') }}
+                </x-responsive-nav-link>
+            </div>
 
-            <div class="mt-3 space-y-1">
+            <div class="space-y-1">
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
 
 class ChatController extends Controller
 {
@@ -79,13 +80,29 @@ class ChatController extends Controller
         ]);
 
         $messages = Messages::join('products', 'products.id', 'messages.product_id')
-            ->where('messages.user_id', Auth::id())
-            ->orWhere('products.user_id', Auth::id())
+            ->where(function ($query) {
+                $query->where('messages.user_id', Auth::id())
+                        ->orWhere('products.user_id', Auth::id());
+            })
             ->where('messages.product_id', $productId)
             ->where('messages.user_id', $userId)
             ->get();
 
-        return view('chat.thread', compact('product', 'messages'));
+        $chatAccess = Messages::join('products', 'messages.product_id', 'products.id')
+            ->where('messages.product_id', $productId)
+            ->where('messages.user_id', $userId)
+            ->where(function ($query) {
+                $query->where('messages.user_id', Auth::id())
+                      ->orWhere('products.user_id', Auth::id());
+            })
+            ->count();
+
+        if($chatAccess == 0){
+            return redirect()->route('chat');
+        }
+        else{
+            return view('chat.thread', compact('product', 'messages'));
+        }
     }
 
     public function createChatShow($productId){
