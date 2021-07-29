@@ -15,16 +15,16 @@
             </div>
         @endif
 
-        <form action="/product/{{ $product->product_id }}/edit" method="POST" enctype="multipart/form-data" class="d-flex">
+        <form action="/product/{{ $product->product_id }}/edit" method="POST" enctype="multipart/form-data" class="d-md-flex">
             @csrf
             <div class="w-75">
-                <div class="d-flex flex-wrap">
-                    <div class="d-flex flex-column w-25 mt-3 mr-10">
+                <div class="d-md-flex flex-wrap">
+                    <div class="d-flex flex-column w-md-25 mt-3 mr-10">
                         <label for="title" class="text-lg mb-2">1. Title</label>
                         <input value="{{ $product->title }}" class="p-2" type="text" name="title" placeholder="Give your listing a title" />
                     </div>
 
-                    <div class="d-flex flex-column w-25 mt-3 ml-10">
+                    <div class="d-flex flex-column w-md-25 mt-3 ml-md-10">
                         <label for="price" class="text-lg mb-2">2. Price</label>
                         <div>
                             <span class="text-lg mb-2">€</span>
@@ -54,13 +54,13 @@
                         <label for="removeImages" class="ml-2">Remove existing images?</label>
                     </div>
                 </div>
-                <div class="d-flex flex-wrap mb-10">
-                    <div class="d-flex flex-column mt-3 w-50 pr-10">
+                <div class="d-md-flex flex-wrap mb-10">
+                    <div class="d-flex flex-column mt-3 w-md-50 pr-10">
                         <label for="description" class="text-lg mb-2">4. Description</label>
                         <textarea class="p-2" name="description" id="description" placeholder="Describe what you are selling." cols="30" rows="9">{{ $product->description }}</textarea>
                     </div>
 
-                    <div class="d-flex flex-column mt-3 w-50">
+                    <div class="d-flex flex-column mt-3 w-md-50">
                         <h3 class="text-lg mb-2">5. Select a category for your listing</h3>
                         @foreach($allCategories as $category)
                             <label for="{{ $loop->index+1 }}">
@@ -72,17 +72,17 @@
                 </div>
                 <div class="mt-3">
                     <h3 class="text-lg mb-2">6. Location</h3>
-                    <div class="d-flex flex-column w-25 r-10">
+                    <div class="d-flex flex-column w-md-25 r-10">
                         <label class="text-lg mb-2" for="postCode">Postal Code<span class="text-danger"> *</span></label>
                         <input class="p-2" value="{{ $address[0] }}" type="text" name="postCode" id="postCode" placeholder="Enter your postal code">
                     </div>
-                    <div class="d-flex flex-column w-25 mt-3 mr-10">
+                    <div class="d-flex flex-column w-md-25 mt-3 mr-10">
                         <label class="text-lg mb-2" for="country">Country<span class="text-danger"> *</span></label>
                         <input class="p-2" value="{{ $address[3] }}" type="text" name="country" id="country" placeholder="Enter your country">
                     </div>
                 </div>
             </div>
-            <div class="text-right mt-10 w-25">
+            <div class="text-center mt-10 w-md-25">
                 <input class="btn btn-primary text-white text-lg w-75" type="submit" value="Save Changes">
                 <a class="btn btn-secondary text-lg mt-2 w-75" type="button" href="/product/{{ $product->product_id }}">Return to Listing</a>
             </div>

@@ -12,8 +12,8 @@
             </div>
         @endif
     </header>
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 d-flex justify-content-center">
-        <div class="text-center mt-4 pr-5 border-end">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 d-md-flex justify-content-center">
+        <div class="text-center mt-4 pr-5 border-end d-flex flex-column align-items-center">
             <h2 class="mb-4 text-xl">User Details:</h2>
             <div class="bg-image mb-2 w-20 h-20 pt-20 pb-20 pr-20 pl-20 rounded-circle" 
                 style="background-image: url('/storage/{{ $user->user_avatar_path }}'); 
