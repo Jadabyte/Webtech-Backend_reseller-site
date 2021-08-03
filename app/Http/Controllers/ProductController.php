@@ -100,6 +100,13 @@ class ProductController extends Controller
             return redirect('/product/' . $id . '/edit');
         }
 
+        foreach($request->product_img as $image){
+            if(filesize($image) > 2000000){
+                session()->flash("error","Images may not exceed 2mb");
+                return back();
+            }
+        }
+
         $product = Product::find($id);
         $request->validate([
             'title' => 'required|string|max:255',
@@ -169,10 +176,16 @@ class ProductController extends Controller
             'category' => 'required',
             'postCode' => 'required',
             'country' => 'required',
-            'product_img' => 'required|max:2042',
+            'product_img' => 'required',
         ]);
 
-        //-Create a new product----------
+        foreach($request->product_img as $image){
+            if(filesize($image) > 2000000){
+                session()->flash("error","Images may not exceed 2mb");
+                return back();
+            }
+        }
+
         try {
             $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
             $latLng = $location['coordinates'];

@@ -73,6 +73,12 @@ class UserController extends Controller
             'postCode' => 'required',
             'country' => 'required',
         ]);
+        
+        if(filesize($request->avatar) > 2000000){
+            session()->flash("error","Your profile image may not exceed 2mb");
+            return back();
+        }
+
         $user = User::find(Auth::id());
 
         try {
