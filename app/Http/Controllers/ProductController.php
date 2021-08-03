@@ -169,6 +169,7 @@ class ProductController extends Controller
             'category' => 'required',
             'postCode' => 'required',
             'country' => 'required',
+            'product_img' => 'required|max:2042',
         ]);
 
         //-Create a new product----------

@@ -3,9 +3,9 @@
 
 <main class="m-4">
     <h2>You have received a message from 
-        <a href="/profile/{{ $details['userId'] }}">{{ $details['userName'] }}</a> 
+        <a href="{{ url('/') }}/profile/{{ $details['userId'] }}">{{ $details['userName'] }}</a> 
         about the listing 
-        "<a href="/product/{{ $details['productId'] }}">{{ $details['productName'] }}</a>"
+        "<a href="{{ url('/') }}/product/{{ $details['productId'] }}">{{ $details['productName'] }}</a>"
     </h2>
 
     <div>
@@ -13,5 +13,5 @@
         <p>"{{ $details['body'] }}"</p>
     </div>
    
-    <a class="button button-primary" href="/chat/">Send a reply</a>
+    <a class="button button-primary" href="{{ url()->current() }}/thread">Send a reply</a>
 </main>
