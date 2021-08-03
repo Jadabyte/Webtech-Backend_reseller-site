@@ -21,7 +21,7 @@ use App\Http\Controllers\ChatController;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('register');
 });
 Route::get('/login', function () {
     return view('login');
