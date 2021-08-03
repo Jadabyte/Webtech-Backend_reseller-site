@@ -14,6 +14,12 @@
                 <a class="underline" href="/product/{{ $product->product_id }}">Return to Listing</a>
             </div>
         @endif
+        
+        @if(session()->has('error'))
+            <div class="alert alert-danger m-4">
+                {{ session()->get('error') }}
+            </div>
+        @endif
 
         <form action="/product/{{ $product->product_id }}/edit" method="POST" enctype="multipart/form-data" class="d-md-flex">
             @csrf

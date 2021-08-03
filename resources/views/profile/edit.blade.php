@@ -11,7 +11,14 @@
                 {{ session()->get('message') }}
             </div>
         @endif
+
+        @if(session()->has('error'))
+            <div class="alert alert-danger m-4">
+                {{ session()->get('error') }}
+            </div>
+        @endif
         <x-auth-validation-errors class="m-4 alert alert-danger" :errors="$errors" />
+
         <form action="/profile/edit" method="POST" enctype="multipart/form-data" class="d-flex">
             @csrf
             <div class="w-75">

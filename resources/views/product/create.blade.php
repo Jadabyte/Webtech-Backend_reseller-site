@@ -8,6 +8,12 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <!-- Validation Errors -->
         <x-auth-validation-errors class="m-4 alert alert-danger" :errors="$errors" />
+        
+        @if(session()->has('error'))
+            <div class="alert alert-danger m-4">
+                {{ session()->get('error') }}
+            </div>
+        @endif
 
         <form action="/product/create" method="POST" enctype="multipart/form-data" class="d-flex">
             @csrf

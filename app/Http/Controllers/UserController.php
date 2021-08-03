@@ -75,13 +75,18 @@ class UserController extends Controller
         ]);
         $user = User::find(Auth::id());
 
-        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
-        $latLng = $location['coordinates'];
-
-        $user->name = $request->name;
-        $user->lat = $latLng['lat'];
-        $user->lng = $latLng['lng'];
-        $user->address = implode("+", $location['address']);
+        try {
+            $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+            $latLng = $location['coordinates'];
+    
+            $user->name = $request->name;
+            $user->lat = $latLng['lat'];
+            $user->lng = $latLng['lng'];
+            $user->address = implode("+", $location['address']);
+        } catch (\Throwable $th) {
+            session()->flash("error","Please enter a valid postal code and country");
+            return redirect('/profile/edit');
+        }
 
         if (($request->avatar) != null) {
             $image = $request->file('avatar');

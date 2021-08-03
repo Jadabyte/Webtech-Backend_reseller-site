@@ -92,8 +92,13 @@ class ProductController extends Controller
     }
 
     public function editProduct(Request $request, $id){
-        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
-        $latLng = $location['coordinates'];
+        try {
+            $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+            $latLng = $location['coordinates'];
+        } catch (\Throwable $th) {
+            session()->flash("error","Please enter a valid postal code and country");
+            return redirect('/product/' . $id . '/edit');
+        }
 
         $product = Product::find($id);
         $request->validate([
@@ -167,8 +172,13 @@ class ProductController extends Controller
         ]);
 
         //-Create a new product----------
-        $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
-        $latLng = $location['coordinates'];
+        try {
+            $location = (new HEREController)->searchByAddress($request->postCode, $request->country);
+            $latLng = $location['coordinates'];
+        } catch (\Throwable $th) {
+            session()->flash("error","Please enter a valid postal code and country");
+            return redirect('/product/create');
+        }
 
         $product = new Product;
 
