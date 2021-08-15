@@ -21,7 +21,7 @@ use App\Http\Controllers\ChatController;
 */
 
 Auth::routes();
-Route::get('/', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
+Route::get('/', [GeneralController::class, 'showHome'])->middleware(['auth']);
 Route::get('/login', function () {
     return view('login');
 });
