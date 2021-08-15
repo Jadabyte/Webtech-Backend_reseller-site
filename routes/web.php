@@ -20,9 +20,8 @@ use App\Http\Controllers\ChatController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.register');
-});
+Auth::routes();
+Route::get('/', [GeneralController::class, 'showHome'])->middleware(['auth'])->name('dashboard');
 Route::get('/login', function () {
     return view('login');
 });
